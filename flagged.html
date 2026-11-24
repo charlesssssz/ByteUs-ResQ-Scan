@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ResQ-Scan - Flagged Photos / Report ID - CDRRMO Batangas</title>
+    <!-- Leaflet CSS for interactive GIS map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="flagged.css">
+</head>
+
+<body>
+
+    <!-- Inline SVG sprite (zero emojis) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="arrow-left" viewBox="0 0 24 24">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+        </symbol>
+        <symbol id="arrow-right" viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+        </symbol>
+        <symbol id="check" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12" />
+        </symbol>
+        <symbol id="map" viewBox="0 0 24 24">
+            <path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" />
+            <path d="M9 4v14M15 6v14" />
+        </symbol>
+        <symbol id="camera" viewBox="0 0 24 24">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+            <circle cx="12" cy="13" r="4" />
+        </symbol>
+        <symbol id="refresh" viewBox="0 0 24 24">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+        </symbol>
+    </svg>
+
+    <!-- ================= TOP NAV HEADER ================= -->
+    <header class="flagged-header">
+        <div class="header-inner">
+            <div class="header-brand-wrap">
+                <!-- Brand logo pill -->
+                <div class="brand-badge-pill" aria-hidden="true">
+                    <svg viewBox="0 0 36 36" fill="none" class="brand-svg">
+                        <rect width="36" height="36" rx="8" fill="#1E293B" />
+                        <circle cx="18" cy="18" r="9" stroke="#38BDF8" stroke-width="1.2" stroke-dasharray="2 2" />
+                        <circle cx="18" cy="18" r="3" fill="#38BDF8" />
+                        <line x1="18" y1="4" x2="18" y2="10" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" />
+                        <line x1="18" y1="26" x2="18" y2="32" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" />
+                        <line x1="4" y1="18" x2="10" y2="18" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" />
+                        <line x1="26" y1="18" x2="32" y2="18" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <span class="brand-title">ResQ-Scan</span>
+                <span class="brand-breadcrumb">Flagged Photos / Report ID</span>
+                <span class="report-id-pill" id="header-report-id">#INC-1092</span>
+            </div>
+
+            <!-- Queue Quick Navigation & Admin Switch -->
+            <div class="header-actions">
+                <div class="queue-nav">
+                    <button type="button" class="btn-queue-step" id="btn-prev-report" title="Previous Flagged Report">
+                        <svg class="i"><use href="#arrow-left" /></svg>
+                    </button>
+                    <span class="queue-counter" id="queue-counter-text">1 of 23</span>
+                    <button type="button" class="btn-queue-step" id="btn-next-report" title="Next Flagged Report">
+                        <svg class="i"><use href="#arrow-right" /></svg>
+                    </button>
+                </div>
+
+                <!-- Admin Link Back Button -->
+                <a href="../AdminDashboard/admin.html" class="btn-admin-pill" id="link-admin">Admin</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN WORKSPACE ================= -->
+    <main class="flagged-main">
+        <div class="flagged-grid">
+
+            <!-- LEFT COLUMN: MAP / DAMAGE PHOTO CARD -->
+            <section class="card inspection-card">
+                <!-- Inspection Card Bar -->
+                <div class="inspection-bar">
+                    <div class="view-toggles" role="tablist">
+                        <button type="button" class="view-toggle-btn active" id="btn-view-map">
+                            <svg class="i"><use href="#map" /></svg>
+                            <span>Geospatial Hazard Map</span>
+                        </button>
+                        <button type="button" class="view-toggle-btn" id="btn-view-photo">
+                            <svg class="i"><use href="#camera" /></svg>
+                            <span>Disaster Photo Inspection</span>
+                        </button>
+                    </div>
+
+                    <div class="map-tile-types" id="map-style-toggles">
+                        <button type="button" class="tile-btn active" data-style="streets">Streets</button>
+                        <button type="button" class="tile-btn" data-style="satellite">Satellite</button>
+                    </div>
+                </div>
+
+                <!-- Leaflet Interactive Map Canvas -->
+                <div class="map-container-wrap" id="map-wrap">
+                    <div id="flagged-map" class="flagged-map-canvas"></div>
+                    <!-- Photo Inspection Overlay (toggled via button) -->
+                    <div id="photo-overlay" class="photo-inspect-overlay" style="display:none;">
+                        <div class="photo-inspect-inner">
+                            <img id="flagged-photo-img" src="" alt="Damage Documentation Photo">
+                            <div class="ai-box-marker" id="ai-photo-box">
+                                <span class="box-tag" id="ai-box-tag">Roof Detachment / Collapse - 89%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: AI RESULT & OFFICER DECISION CARDS -->
+            <aside class="decision-sidebar">
+
+                <!-- 1. AI RESULT CARD -->
+                <article class="card ai-result-card">
+                    <div class="card-top-row">
+                        <h2 class="card-heading">AI Result</h2>
+                        <span class="severity-badge-pill severe" id="ai-badge-pill">Severe</span>
+                    </div>
+
+                    <div class="score-block">
+                        <span class="score-label">Urgency score</span>
+                        <div class="score-value" id="ai-score-number">89%</div>
+                    </div>
+
+                    <dl class="meta-list">
+                        <div class="meta-row">
+                            <dt class="meta-key">Barangay</dt>
+                            <dd class="meta-val" id="val-barangay">Brgy. Alangilan</dd>
+                        </div>
+                        <div class="meta-row">
+                            <dt class="meta-key">Location</dt>
+                            <dd class="meta-val" id="val-location">Rizal Avenue, near BatStateU; secondary route blocked</dd>
+                        </div>
+                        <div class="meta-row">
+                            <dt class="meta-key">Reporter</dt>
+                            <dd class="meta-val" id="val-reporter">Field Volunteer (Brgy. Patrol)</dd>
+                        </div>
+                        <div class="meta-row">
+                            <dt class="meta-key">Submitted</dt>
+                            <dd class="meta-val" id="val-submitted">Nov 21, 2026 • 14:10</dd>
+                        </div>
+                    </dl>
+                </article>
+
+                <!-- 2. OFFICER DECISION CARD -->
+                <article class="card decision-card">
+                    <h2 class="card-heading">Officer decision</h2>
+
+                    <!-- Triage Severity Buttons -->
+                    <div class="decision-triage-grid" role="group" aria-label="Severity Decision">
+                        <button type="button" class="triage-btn minor" data-val="min">
+                            <span>Minor</span>
+                        </button>
+                        <button type="button" class="triage-btn moderate" data-val="mod">
+                            <span>Moderate</span>
+                        </button>
+                        <button type="button" class="triage-btn severe active" data-val="sev">
+                            <span>Severe</span>
+                        </button>
+                    </div>
+
+                    <!-- Note Textarea -->
+                    <div class="note-wrap">
+                        <textarea class="officer-note-input" id="officer-note"
+                            placeholder="Add a note (optional)" aria-label="Officer assessment note"></textarea>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="decision-actions">
+                        <button type="button" class="btn-verify-report" id="btn-verify-report">
+                            <span>Verify report</span>
+                        </button>
+                        <button type="button" class="btn-request-photo" id="btn-request-photo">
+                            <span>Request new photo</span>
+                        </button>
+                    </div>
+
+                    <!-- Verification Status Bar -->
+                    <div class="verification-status" id="verify-status-bar" style="display:none;">
+                        <svg class="i"><use href="#check" /></svg>
+                        <span id="verify-status-text">Verified by DRRMO Officer • Cleared for Logistics</span>
+                    </div>
+                </article>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Floating Toast Notification System -->
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+    <!-- Leaflet JS & Fallback -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+        if (typeof L === 'undefined') {
+            const fallbackLink = document.createElement('link');
+            fallbackLink.rel = 'stylesheet';
+            fallbackLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+            document.head.appendChild(fallbackLink);
+
+            const fallbackScript = document.createElement('script');
+            fallbackScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+            document.head.appendChild(fallbackScript);
+        }
+    </script>
+    <script src="flagged.js"></script>
+</body>
+
+</html>
