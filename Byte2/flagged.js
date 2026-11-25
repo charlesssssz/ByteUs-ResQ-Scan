@@ -1,4 +1,56 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme persistence & toggle (matched to admin.js / verified.js)
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('resq_theme') || 'light';
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('resq_theme', theme);
+    }
+
+    if (savedTheme === 'dark') {
+        applyTheme('dark');
+    }
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+    }
+
+    // Account menu dropdown
+    const accountToggle = document.getElementById('account-menu-toggle');
+    const accountMenu = document.getElementById('account-menu');
+
+    if (accountToggle && accountMenu) {
+        accountToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const open = accountMenu.hidden;
+            accountMenu.hidden = !open;
+            accountToggle.setAttribute('aria-expanded', String(open));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.account-menu-wrap')) {
+                accountMenu.hidden = true;
+                accountToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !accountMenu.hidden) {
+                accountMenu.hidden = true;
+                accountToggle.setAttribute('aria-expanded', 'false');
+                accountToggle.focus();
+            }
+        });
+    }
+
     // Sidebar collapse matches the admin dashboard navigation behavior.
     const sidebarCollapseBtn = document.getElementById('sidebar-collapse-btn');
     if (sidebarCollapseBtn) {
@@ -12,12 +64,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // =========================================================================
-    // 1. DATASET OF FLAGGED REPORTS (BATANGAS CITY EOC)
+    // 1. DATASET OF FLAGGED REPORTS & USER PROFILE LOCATION INTEGRATION
     // =========================================================================
+    const defaultUserProfiles = {
+        'usr-patrol-1': {
+            id: 'usr-patrol-1',
+            name: 'Field Volunteer (Brgy. Patrol)',
+            district: '5th District',
+            municipality: 'Batangas City',
+            barangay: 'Brgy. Alangilan'
+        },
+        'usr-santos-2': {
+            id: 'usr-santos-2',
+            name: 'Field Volunteer (Officer Santos)',
+            district: '5th District',
+            municipality: 'Batangas City',
+            barangay: 'Brgy. Sta. Clara'
+        },
+        'usr-batangas-3': {
+            id: 'usr-batangas-3',
+            name: 'Community Resident (M. Batangas)',
+            district: '5th District',
+            municipality: 'Batangas City',
+            barangay: 'Brgy. Kumintang Ilaya'
+        },
+        'usr-ramos-4': {
+            id: 'usr-ramos-4',
+            name: 'Community Resident (J. Ramos)',
+            district: '5th District',
+            municipality: 'Batangas City',
+            barangay: 'Brgy. Libjo'
+        }
+    };
+
+    function loadUserProfileIndex() {
+        const byId = { ...defaultUserProfiles };
+        const byName = {};
+        Object.values(byId).forEach(profile => {
+            if (profile && profile.name) byName[profile.name] = profile;
+        });
+
+        try {
+            const storedList = JSON.parse(localStorage.getItem('resq_user_profiles') || 'null');
+            if (Array.isArray(storedList)) {
+                storedList.forEach(profile => {
+                    if (!profile || typeof profile !== 'object') return;
+                    if (profile.id) byId[profile.id] = profile;
+                    if (profile.name) byName[profile.name] = profile;
+                });
+            } else if (storedList && typeof storedList === 'object') {
+                Object.entries(storedList).forEach(([key, profile]) => {
+                    if (!profile || typeof profile !== 'object') return;
+                    byId[profile.id || key] = profile;
+                    if (profile.name) byName[profile.name] = profile;
+                });
+            }
+
+            const singleProfile = JSON.parse(localStorage.getItem('resq_user_profile') || 'null');
+            if (singleProfile && typeof singleProfile === 'object') {
+                if (singleProfile.id) byId[singleProfile.id] = singleProfile;
+                if (singleProfile.name) byName[singleProfile.name] = singleProfile;
+            }
+        } catch (err) {
+            console.warn('Unable to read stored user profiles:', err);
+        }
+
+        return { byId, byName };
+    }
+
+    const userProfileIndex = loadUserProfileIndex();
+
+    function cleanLocationPart(value) {
+        if (value === null || value === undefined) return '';
+        const text = String(value).trim();
+        if (!text || text.toLowerCase() === 'null' || text.toLowerCase() === 'undefined') {
+            return '';
+        }
+        return text;
+    }
+
+    function getAssociatedUserProfile(report) {
+        if (!report) return null;
+        if (report.userProfile && typeof report.userProfile === 'object') return report.userProfile;
+        if (report.profile && typeof report.profile === 'object') return report.profile;
+        if (report.user && typeof report.user === 'object') return report.user;
+
+        const profileId = report.userId || report.reporterId;
+        if (profileId && userProfileIndex.byId[profileId]) {
+            return userProfileIndex.byId[profileId];
+        }
+        if (report.reporter && userProfileIndex.byName[report.reporter]) {
+            return userProfileIndex.byName[report.reporter];
+        }
+        return null;
+    }
+
+    function formatUserLocation(profile, fallbackReport = null) {
+        const source = profile || fallbackReport || {};
+        const barangay = cleanLocationPart(source.barangay ?? source.Barangay ?? source.brgy);
+        const municipality = cleanLocationPart(source.municipality ?? source.Municipality ?? source.city);
+        const district = cleanLocationPart(source.district ?? source.District);
+
+        const parts = [barangay, municipality, district].filter(Boolean);
+        return {
+            hasLocation: parts.length > 0,
+            text: parts.length > 0 ? parts.join(', ') : 'Location unavailable'
+        };
+    }
+
     const flaggedReports = [
         {
             id: 'inc-1',
             reportId: '#INC-1092',
+            userId: 'usr-patrol-1',
             brgy: 'Brgy. Alangilan',
             location: 'Rizal Avenue, near BatStateU; secondary route blocked',
             reporter: 'Field Volunteer (Brgy. Patrol)',
@@ -48,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'inc-2',
             reportId: '#INC-1093',
+            userId: 'usr-santos-2',
             brgy: 'Brgy. Sta. Clara',
             location: 'Port Access Road, near Terminal 2 passenger shed',
             reporter: 'Field Volunteer (Officer Santos)',
@@ -74,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'inc-3',
             reportId: '#INC-1094',
+            userId: 'usr-batangas-3',
             brgy: 'Brgy. Kumintang Ilaya',
             location: 'Bridge approach near national highway culvert',
             reporter: 'Community Resident (M. Batangas)',
@@ -100,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 'inc-4',
             reportId: '#INC-1095',
+            userId: 'usr-ramos-4',
             brgy: 'Brgy. Libjo',
             location: 'Bypass road shoulder, near barangay outpost',
             reporter: 'Community Resident (J. Ramos)',
@@ -358,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnViewPhoto.addEventListener('click', () => {
             btnViewPhoto.classList.add('active');
             btnViewMap.classList.remove('active');
-            if (photoOverlay) photoOverlay.style.display = 'grid';
+            if (photoOverlay) photoOverlay.style.display = 'flex';
             if (mapStyleToggles) mapStyleToggles.style.display = 'none';
             if (photoImg && currentReport) {
                 photoImg.src = `data:image/svg+xml;utf8,${encodeURIComponent(currentReport.photoSvg)}`;
@@ -376,12 +538,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const queueCounterText = document.getElementById('queue-counter-text');
     const aiBadgePill = document.getElementById('ai-badge-pill');
     const aiScoreNumber = document.getElementById('ai-score-number');
-    const valBarangay = document.getElementById('val-barangay');
+    const DAMAGE_FEATURE_LABELS = {
+        'ROOF OFF': 'Roof Detachment / Wind Damage',
+        'COLLAPSE': 'Structural Failure / Wall Collapse',
+        'WATER': 'Water Inundation / Flash Flood',
+        'DEBRIS': 'Downed Trees / Blocked Route',
+        'LANDSLIDE': 'Landslide / Soil Erosion',
+        'STORM SURGE': 'Coastal Erosion / Storm Surge Damage',
+        'POWER LINES': 'Downed Power Lines / Electrical Poles',
+        'GROUND CRACKS': 'Ground Cracks / Road Damage',
+        'BRIDGE COLLAPSE': 'Damaged Bridge / Road Collapse',
+        'FIRE': 'Fire',
+        'ASHFALL': 'Volcanic Ashfall Damage',
+        'CROP DAMAGE': 'Crop / Farmland Damage',
+        'FISHING BOATS': 'Damaged Fishing Boats / Fish Cages',
+        'WATER SUPPLY': 'Water Supply / Pipe Damage',
+        'COMMS': 'Communication Tower / Network Damage',
+        'PUBLIC FACILITY': 'Damaged Public Facility / Evacuation Center',
+        'HAZMAT': 'Fuel / Gas Leak / Chemical Spill'
+    };
+
+    function formatDamageFeature(hazardType) {
+        const key = cleanLocationPart(hazardType).toUpperCase();
+        if (!key) return 'Not specified';
+        return DAMAGE_FEATURE_LABELS[key] || cleanLocationPart(hazardType);
+    }
+
     const valLocation = document.getElementById('val-location');
+    const valUserLocation = document.getElementById('val-user-location');
+    const valDamageFeature = document.getElementById('val-damage-feature');
     const valReporter = document.getElementById('val-reporter');
     const valSubmitted = document.getElementById('val-submitted');
     const officerNote = document.getElementById('officer-note');
     const verifyStatusBar = document.getElementById('verify-status-bar');
+    const photoReportId = document.getElementById('photo-report-id');
+    const photoSeverityBadge = document.getElementById('photo-severity-badge');
+    const photoLocationText = document.getElementById('photo-location-text');
+    const photoDamageFeature = document.getElementById('photo-damage-feature');
+    const photoDamageNotes = document.getElementById('photo-damage-notes');
+    const photoReporterMeta = document.getElementById('photo-reporter-meta');
+    const aiPhotoBox = document.getElementById('ai-photo-box');
+
+    function syncPhotoOverlaySeverity(sev) {
+        const sevClass = sev === 'sev' ? 'severe' : sev === 'mod' ? 'moderate' : 'minor';
+        const sevLabel = sev === 'sev' ? 'Severe' : sev === 'mod' ? 'Moderate' : 'Minor';
+        if (photoSeverityBadge) {
+            photoSeverityBadge.className = `photo-hud-sev ${sevClass}`;
+            photoSeverityBadge.textContent = sevLabel;
+        }
+        if (aiPhotoBox) {
+            aiPhotoBox.className = `ai-box-marker ${sevClass}`;
+        }
+    }
 
     function renderReportUI(report) {
         if (!report) return;
@@ -398,7 +606,17 @@ document.addEventListener('DOMContentLoaded', () => {
             aiBadgePill.textContent = report.severity === 'sev' ? 'Severe' : report.severity === 'mod' ? 'Moderate' : 'Minor';
         }
 
-        if (valBarangay) valBarangay.textContent = report.brgy;
+        const associatedProfile = getAssociatedUserProfile(report);
+        const formattedLocation = formatUserLocation(associatedProfile, report);
+        const formattedFeature = formatDamageFeature(report.hazardType);
+
+        if (valUserLocation) {
+            valUserLocation.textContent = formattedLocation.text;
+            valUserLocation.classList.toggle('is-missing', !formattedLocation.hasLocation);
+        }
+        if (valDamageFeature) {
+            valDamageFeature.textContent = formattedFeature;
+        }
         if (valLocation) valLocation.textContent = report.location;
         if (valReporter) valReporter.textContent = report.reporter;
         if (valSubmitted) valSubmitted.textContent = report.submitted;
@@ -418,6 +636,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aiBoxTag) {
             aiBoxTag.textContent = `${report.hazardType} • ${report.score}`;
         }
+        if (photoReportId) photoReportId.textContent = report.reportId;
+        if (photoLocationText) photoLocationText.textContent = formattedLocation.text;
+        if (photoDamageFeature) photoDamageFeature.textContent = formattedFeature;
+        if (photoDamageNotes) photoDamageNotes.textContent = report.location || 'No additional notes';
+        if (photoReporterMeta) photoReporterMeta.textContent = `${report.reporter} • ${report.submitted}`;
+        syncPhotoOverlaySeverity(selectedDecision);
 
         // Update map hazard box
         renderHazardBox();
@@ -452,6 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 aiBadgePill.className = `severity-badge-pill ${selectedDecision === 'sev' ? 'severe' : selectedDecision === 'mod' ? 'moderate' : 'minor'}`;
                 aiBadgePill.textContent = selectedDecision === 'sev' ? 'Severe' : selectedDecision === 'mod' ? 'Moderate' : 'Minor';
             }
+            syncPhotoOverlaySeverity(selectedDecision);
             renderHazardBox();
         });
     });
