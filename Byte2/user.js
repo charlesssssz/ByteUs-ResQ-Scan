@@ -1247,26 +1247,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const poblacionBarangays = Array.from({ length: 24 }, (_, i) => `Barangay ${i + 1} (Poblacion)`);
 
     const BATANGAS_CITY_BARANGAYS = [
-        ...poblacionBarangays,
-        'Cuta', 'Malitam', 'Santa Clara', 'Wawa',
-        'Liponpon', 'San Agapito', 'San Agustin Kanluran',
-        'San Agustin Silangan', 'San Andres', 'San Antonio',
-        'Alangilan', 'Balagtas', 'Balete', 'Banaba Center', 'Banaba Ibaba',
-        'Banaba Kanluran', 'Banaba Silangan', 'Bilogo', 'Bolbok', 'Bukal',
-        'Calicanto', 'Catandala', 'Concepcion', 'Conde Itaas', 'Conde Labak',
-        'Dalig', 'Dela Paz', 'Dela Paz Pulot Aplaya', 'Dela Paz Pulot Itaas',
-        'Domoclay', 'Dumantay', 'Gulod Itaas', 'Gulod Labak', 'Haligue Kanluran',
-        'Haligue Silangan', 'Ilihan', 'Kumba', 'Kumintang Ibaba', 'Kumintang Ilaya',
-        'Libjo', 'Maapas', 'Mabacong (Matoco)', 'Mahabang Dahilig', 'Mahabang Parang',
-        'Mahacot Kanluran', 'Mahacot Silangan', 'Malalim', 'Malibayo', 'Maruclap',
-        'Pagkilatan', 'Paharang Kanluran', 'Paharang Silangan', 'Pallocan Kanluran',
-        'Pallocan Silangan', 'Pinamucan', 'Pinamucan Ibaba', 'Pinamucan Silangan',
-        'Sampaga', 'San Isidro', 'San Jose Sico', 'San Miguel', 'San Pedro',
-        'Santa Rita Aplaya', 'Santa Rita Karsada', 'Santo Domingo', 'Santo Niño',
-        'Simlong', 'Sirang Lupa', 'Sorosoro Ibaba', 'Sorosoro Ilaya', 'Sorosoro Karsada',
-        'Tabangao Ambulong', 'Tabangao Aplaya (Tabangao Proper)', 'Tabangao Dao',
-        'Talahib Pandayan', 'Talahib Payapa', 'Talumpok Kanluran', 'Talumpok Silangan',
-        'Tinga Itaas', 'Tinga Labak', 'Tulo'
+        // Poblacion (Barangay 1‑24)
+        'Barangay 1', 'Barangay 2', 'Barangay 3', 'Barangay 4', 'Barangay 5', 'Barangay 6',
+        'Barangay 7', 'Barangay 8', 'Barangay 9', 'Barangay 10', 'Barangay 11', 'Barangay 12',
+        'Barangay 13', 'Barangay 14', 'Barangay 15', 'Barangay 16', 'Barangay 17', 'Barangay 18',
+        'Barangay 19', 'Barangay 20', 'Barangay 21', 'Barangay 22', 'Barangay 23', 'Barangay 24',
+        // Other barangays
+        'Alangilan', 'Balagtas', 'Balete', 'Banaba Center', 'Banaba Ibaba', 'Banaba Kanluran',
+        'Banaba Silangan', 'Bilogo', 'Bolbok', 'Bukal', 'Calicanto', 'Catandala', 'Concepcion',
+        'Conde Itaas', 'Conde Labak', 'Cuta', 'Dalig', 'Dela Paz', 'Dela Paz Pulot Aplaya',
+        'Dela Paz Pulot Itaas', 'Domoclay', 'Dumantay', 'Gulod Itaas', 'Gulod Labak',
+        'Haligue Kanluran', 'Haligue Silangan', 'Ilijan', 'Kumba', 'Kumintang Ibaba',
+        'Kumintang Ilaya', 'Libjo', 'Liponpon', 'Maapas', 'Mabacong (Matoco)', 'Mahabang Dahilig',
+        'Mahabang Parang', 'Mahacot Kanluran', 'Mahacot Silangan', 'Malalim', 'Malibayo', 'Malitam',
+        'Maruclap', 'Pagkilatan', 'Paharang Kanluran', 'Paharang Silangan', 'Pallocan Kanluran',
+        'Pallocan Silangan', 'Pinamucan', 'Pinamucan Ibaba', 'Pinamucan Silangan', 'Sampaga',
+        'San Agapito', 'San Agustin Kanluran', 'San Agustin Silangan', 'San Andres', 'San Antonio',
+        'San Isidro', 'San Jose Sico', 'San Miguel', 'San Nicolas', 'San Pablo', 'San Pascual',
+        'San Pedro', 'Santa Clara', 'Santa Rita Aplaya', 'Santa Rita Karsada', 'Santo Domingo',
+        'Santo Niño', 'Simlong', 'Sirang Lupa', 'Sorosoro Ibaba', 'Sorosoro Ilaya', 'Sorosoro Karsada',
+        'Tabangao Ambulong', 'Tabangao Aplaya (Tabangao Proper)', 'Tabangao Dao', 'Talahib Pandayan',
+        'Talahib Payapa', 'Talumpok Kanluran', 'Talumpok Silangan', 'Tinga Itaas', 'Tinga Labak',
+        'Tulo', 'Wawa'
     ];
 
     const DISTRICT_PLACES = {
