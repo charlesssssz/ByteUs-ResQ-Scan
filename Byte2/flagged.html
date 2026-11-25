@@ -50,6 +50,13 @@
             <polyline points="23 4 23 10 17 10" />
             <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
         </symbol>
+        <symbol id="moon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </symbol>
+        <symbol id="sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </symbol>
     </svg>
 
 
@@ -99,6 +106,65 @@
 
     <!-- ================= MAIN WORKSPACE ================= -->
     <main class="flagged-main">
+
+        <!-- ================= DOCKED TOP COMMAND HEADER ================= -->
+        <header class="top-command-header">
+            <div class="header-left">
+                <div class="header-breadcrumb">BATANGAS PROVINCE / DRRMO HUMAN-IN-THE-LOOP TRIAGE</div>
+                <div class="header-headline">
+                    <h1>Flagged Photos</h1>
+                </div>
+            </div>
+
+            <div class="header-tools">
+                <!-- Location / Sector Selector -->
+                <div class="sector-dropdown-wrapper">
+                    <svg class="i icon-pin">
+                        <use href="#map" />
+                    </svg>
+                    <select id="sector-filter" aria-label="Filter by Sector">
+                        <option value="all">Batangas City – All Sectors</option>
+                        <option value="s1">Sector 1 (Poblacion &amp; Port)</option>
+                        <option value="s2">Sector 2 (Calumpang Basin)</option>
+                        <option value="s3">Sector 3 (South Coast)</option>
+                    </select>
+                </div>
+
+                <div class="header-vsep"></div>
+
+                <!-- Utility Controls -->
+                <button class="btn-icon-command" id="theme-toggle" type="button" aria-label="Toggle Command Dark Mode"
+                    title="Toggle EOC Dark/Light Mode">
+                    <svg class="i icon-moon">
+                        <use href="#moon" />
+                    </svg>
+                    <svg class="i icon-sun">
+                        <use href="#sun" />
+                    </svg>
+                </button>
+
+                <div class="header-vsep"></div>
+
+                <!-- User account dropdown -->
+                <div class="account-menu-wrap">
+                    <button class="profile-chip" id="account-menu-toggle" type="button"
+                        aria-expanded="false" aria-haspopup="true" aria-controls="account-menu">
+                        <span class="avatar-circle">AD</span>
+                        <span class="profile-details">
+                            <span class="profile-role">MDRRMO Chief</span>
+                            <span class="profile-name">Command Post 1</span>
+                        </span>
+                        <span class="account-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="account-menu" id="account-menu" hidden>
+                        <div class="account-menu-heading">Account</div>
+                        <a href="user.html" class="account-menu-item" id="users-accounts-btn">Citizen's Acc.</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flagged-content">
         <div class="flagged-grid">
 
             <!-- LEFT COLUMN: MAP / DAMAGE PHOTO CARD -->
@@ -140,11 +206,27 @@
                     <div id="flagged-map" class="flagged-map-canvas"></div>
                     <!-- Photo Inspection Overlay (toggled via button) -->
                     <div id="photo-overlay" class="photo-inspect-overlay" style="display:none;">
+                        <div class="photo-inspect-hud-top">
+                            <div class="photo-hud-left">
+                                <span class="photo-hud-id" id="photo-report-id">#INC-1092</span>
+                                <span class="photo-hud-sev severe" id="photo-severity-badge">Severe</span>
+                            </div>
+                            <div class="photo-hud-location" id="photo-location-text">—</div>
+                        </div>
+
                         <div class="photo-inspect-inner">
                             <img id="flagged-photo-img" src="" alt="Damage Documentation Photo">
                             <div class="ai-box-marker" id="ai-photo-box">
-                                <span class="box-tag" id="ai-box-tag">Roof Detachment / Collapse - 89%</span>
+                                <span class="box-tag" id="ai-box-tag">COLLAPSE • 89%</span>
                             </div>
+                        </div>
+
+                        <div class="photo-inspect-caption">
+                            <div class="photo-caption-main">
+                                <strong class="photo-caption-feature" id="photo-damage-feature">—</strong>
+                                <span class="photo-caption-notes" id="photo-damage-notes">—</span>
+                            </div>
+                            <div class="photo-caption-meta" id="photo-reporter-meta">—</div>
                         </div>
                     </div>
                 </div>
@@ -166,12 +248,16 @@
                     </div>
 
                     <dl class="meta-list">
-                        <div class="meta-row">
-                            <dt class="meta-key">Barangay</dt>
-                            <dd class="meta-val" id="val-barangay">Brgy. Alangilan</dd>
+                        <div class="meta-row meta-row-location" id="meta-user-location-row">
+                            <dt class="meta-key">Registered Location</dt>
+                            <dd class="meta-val meta-val-location" id="val-user-location">—</dd>
                         </div>
                         <div class="meta-row">
-                            <dt class="meta-key">Location</dt>
+                            <dt class="meta-key">Observed Damage Feature</dt>
+                            <dd class="meta-val" id="val-damage-feature">—</dd>
+                        </div>
+                        <div class="meta-row">
+                            <dt class="meta-key">Location Details &amp; Damage Notes</dt>
                             <dd class="meta-val" id="val-location">Rizal Avenue, near BatStateU; secondary route blocked</dd>
                         </div>
                         <div class="meta-row">
@@ -227,6 +313,7 @@
 
             </aside>
 
+        </div>
         </div>
     </main>
 
