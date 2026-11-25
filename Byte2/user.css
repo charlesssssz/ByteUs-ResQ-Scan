@@ -1050,12 +1050,14 @@ html:not([data-theme="dark"]) .icon-sun {
   box-shadow: var(--shadow);
   animation: fadeIn .2s ease-out;
 }
+
 .ai-box-badge-row {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
+
 .ai-category-badge {
   font: 700 11px var(--mono);
   background: var(--blue-soft);
@@ -1064,33 +1066,40 @@ html:not([data-theme="dark"]) .icon-sun {
   border-radius: 4px;
   letter-spacing: .02em;
 }
+
 .ai-severity-badge {
   font: 700 11px var(--sans);
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: capitalize;
 }
+
 .ai-severity-badge.sev {
   background: var(--red-soft);
   color: var(--red-ink);
 }
+
 .ai-severity-badge.mod {
   background: var(--amb-soft);
   color: var(--amb-ink);
 }
+
 .ai-severity-badge.min {
   background: var(--grn-soft);
   color: var(--grn-ink);
 }
+
 .ai-conf-badge {
   font-size: 11.5px;
   color: var(--muted);
   margin-left: auto;
 }
+
 .ai-conf-badge strong {
   color: var(--ink);
   font-family: var(--mono);
 }
+
 .ai-summary-text {
   font-size: 12.5px;
   color: var(--ink-2);
@@ -2414,30 +2423,49 @@ html:not([data-theme="dark"]) .icon-sun {
 
 /* MapLibre canvas: same engine presentation as the Admin Dashboard */
 #user-map-canvas {
-    position: relative;
-    width: 100%;
-    min-height: 420px;
-    background: #E2E8F0;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  background: #E2E8F0;
+  overflow: hidden;
 }
-#user-map-canvas .maplibregl-canvas { outline: none; }
-#user-map-canvas .maplibregl-ctrl-top-right { top: 10px; right: 10px; }
+
+#user-map-canvas .maplibregl-canvas {
+  outline: none;
+}
+
+#user-map-canvas .maplibregl-ctrl-top-right {
+  top: 10px;
+  right: 10px;
+}
+
 #user-map-canvas .maplibregl-ctrl-group {
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(15,23,42,.16);
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .16);
 }
+
 #user-map-canvas .maplibregl-ctrl-group button {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
+
 #user-map-canvas .maplibregl-ctrl-attrib {
-    font-size: 10px;
+  font-size: 10px;
 }
-.maplibre-marker-host { cursor: pointer; }
-.maplibre-marker-host .radar-marker { position: relative; }
-.maplibre-marker-host .shelter-pin-host { display: block; }
+
+.maplibre-marker-host {
+  cursor: pointer;
+}
+
+.maplibre-marker-host .radar-marker {
+  position: relative;
+}
+
+.maplibre-marker-host .shelter-pin-host {
+  display: block;
+}
 
 .logo-badge img {
   width: 28px;
