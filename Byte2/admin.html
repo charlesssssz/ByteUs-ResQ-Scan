@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ResQ-Scan – LGU Ops Command (Batangas)</title>
+    <!-- MapLibre map styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.2/dist/maplibre-gl.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- Inline SVG icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="shield" viewBox="0 0 24 24">
+            <path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6l8-3z" />
+            <path d="M8 12h8M12 8v8" opacity=".9" />
+        </symbol>
+        <symbol id="grid" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+        </symbol>
+        <symbol id="map" viewBox="0 0 24 24">
+            <path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" />
+            <path d="M9 4v14M15 6v14" />
+        </symbol>
+        <symbol id="img" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <circle cx="9" cy="10" r="2" />
+            <path d="M21 16l-5-5-9 9" />
+        </symbol>
+        <symbol id="check" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M8 12l3 3 5-6" />
+        </symbol>
+        <symbol id="home" viewBox="0 0 24 24">
+            <path d="M3 11l9-8 9 8" />
+            <path d="M5 10v10h14V10" />
+            <path d="M10 20v-5h4v5" />
+        </symbol>
+        <symbol id="warn" viewBox="0 0 24 24">
+            <path d="M12 3l10 18H2L12 3z" />
+            <path d="M12 10v5M12 18h.01" />
+        </symbol>
+        <symbol id="up" viewBox="0 0 24 24">
+            <path d="M7 17L17 7M9 7h8v8" />
+        </symbol>
+        <symbol id="clip" viewBox="0 0 24 24">
+            <rect x="5" y="4" width="14" height="17" rx="2" />
+            <path d="M9 4h6v3H9zM9 12h6M9 16h4" />
+        </symbol>
+        <symbol id="moon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </symbol>
+        <symbol id="sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </symbol>
+        <symbol id="radio" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="2" />
+            <path
+                d="M16.24 7.76a6 6 0 010 8.49M7.76 16.24a6 6 0 010-8.49M19.07 4.93a10 10 0 010 14.14M4.93 19.07a10 10 0 010-14.14" />
+        </symbol>
+        <symbol id="camera" viewBox="0 0 24 24">
+            <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+            <circle cx="12" cy="13" r="4" />
+        </symbol>
+        <symbol id="user" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+        </symbol>
+        <symbol id="file-text" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+        </symbol>
+        <symbol id="download" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+        </symbol>
+        <symbol id="plus" viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+        </symbol>
+        <symbol id="chevron-down" viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9" />
+        </symbol>
+    </svg>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo emblem-badge" title="ResQ-Scan Logo">
+                <img class="brand-logo" src="ResQ-Scan_Logo.png" alt="ResQ-Scan logo">
+            </div>
+            <div class="brand-text">
+                <b class="brand-title">ResQ-Scan</b>
+                <span class="brand-sub">LGU OPS • BATANGAS</span>
+            </div>
+        </div>
+
+        <div class="net">
+            <span class="l"><i class="dot"></i>Operations Network</span>
+            <span class="tagb">R-IV-A</span>
+        </div>
+
+        <nav class="nav" aria-label="Primary">
+            <a href="admin.html" class="active" aria-current="page"><svg class="i">
+                    <use href="#grid" />
+                </svg>Dashboard<span class="end"><i class="ind"></i></span></a>
+            <a href="flagged.html"><svg class="i">
+                    <use href="#img" />
+                </svg>Flagged Photos<span class="end"><span class="pill r" id="nav-queue-count">23</span></span></a>
+            <a href="verified.html"><svg class="i">
+                    <use href="#check" />
+                </svg>Verified Reports<span class="end"><span class="pill g" id="nav-verified-rate">94%</span></span></a>
+        </nav>
+
+        <div class="cmd">
+            <div class="row"><strong>MDRRMO BATANGAS</strong><span class="on">● Online</span></div>
+            <p>Incident Command Post 1</p>
+            <small><span>ResQ Core v4.2.1</span><span>Live Sync</span></small>
+        </div>
+
+        <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" type="button"
+                aria-label="Collapse sidebar" title="Collapse sidebar">
+            <span aria-hidden="true">‹</span>
+        </button>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+        <!-- ================= DOCKED TOP COMMAND HEADER ================= -->
+        <header class="top-command-header">
+            <div class="header-left">
+                <div class="header-breadcrumb">BATANGAS PROVINCE / SECTOR 3 SOUTH COAST</div>
+                <div class="header-headline">
+                    <h1>Damage Overview</h1>
+                </div>
+            </div>
+
+            <div class="header-tools">
+                <!-- Location / Sector Selector with Map Pin -->
+                <div class="sector-dropdown-wrapper">
+                    <svg class="i icon-pin">
+                        <use href="#map" />
+                    </svg>
+                    <select id="sector-select" aria-label="Sector Location">
+                        <option value="s3">Batangas City - Sector 3 (South Coast)</option>
+                        <option value="s1">Batangas City - Sector 1 (Poblacion &amp; Port)</option>
+                        <option value="s2">Batangas City - Sector 2 (Calumpang Basin)</option>
+                    </select>
+                </div>
+
+                <div class="header-vsep"></div>
+
+                <!-- Utility Controls -->
+                <button class="btn-icon-command" id="theme-toggle" aria-label="Toggle Command Dark Mode"
+                    title="Toggle EOC Dark/Light Mode">
+                    <svg class="i icon-moon">
+                        <use href="#moon" />
+                    </svg>
+                    <svg class="i icon-sun">
+                        <use href="#sun" />
+                    </svg>
+                </button>
+
+                <div class="header-vsep"></div>
+
+                <!-- User account dropdown -->
+                <div class="account-menu-wrap">
+                    <button class="profile-chip" id="account-menu-toggle" type="button"
+                        aria-expanded="false" aria-haspopup="true" aria-controls="account-menu">
+                        <span class="avatar-circle">AD</span>
+                        <span class="profile-details">
+                            <span class="profile-role">MDRRMO Chief</span>
+                            <span class="profile-name">Command Post 1</span>
+                        </span>
+                        <span class="account-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="account-menu" id="account-menu" hidden>
+                        <div class="account-menu-heading">Account</div>
+                        <a href="user.html" class="account-menu-item" id="users-accounts-btn">Citizen's Acc.</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Read-only dashboard summary metrics -->
+            <section class="metrics-grid" aria-label="Damage summary">
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span class="dot-indicator red"></span><span>SEVERE</span></div>
+                        <span class="status-chip chip-red">Critical Urgency</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="metric-severe-count">21</strong>
+                        <span class="trend-badge red"><svg class="i">
+                                <use href="#up" />
+                            </svg>+4 in 2h</span>
+                    </div>
+                    <p class="metric-desc">Structural collapse, life safety hazards, impassable routes.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span class="dot-indicator amber"></span><span>MODERATE</span></div>
+                        <span class="status-chip chip-amber">Assistance Needed</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="metric-moderate-count">15</strong>
+                        <span class="trend-badge amber"><svg class="i">
+                                <use href="#warn" />
+                            </svg>+2 new</span>
+                    </div>
+                    <p class="metric-desc">Roof detachment, standing water, downed non-grid cables.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span class="dot-indicator green"></span><span>MINOR</span></div>
+                        <span class="status-chip chip-green">Manageable</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="metric-minor-count">7</strong>
+                        <span class="trend-badge green"><svg class="i">
+                                <use href="#check" />
+                            </svg>Cleared 3</span>
+                    </div>
+                    <p class="metric-desc">Tree branches, minor debris on shoulders, non-critical damage.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span class="dot-indicator blue"></span><span>AWAITING VERIFICATION</span>
+                        </div>
+                        <span class="status-chip chip-blue">Action Queue</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="metric-queue-count">23</strong>
+                        <span class="trend-badge blue"><svg class="i">
+                                <use href="#clip" />
+                            </svg>Needs Sign-off</span>
+                    </div>
+                    <p class="metric-desc">Reports submitted by residents and field teams for review.</p>
+                </article>
+            </section>
+            <!-- Workspace -->
+            <section class="work">
+
+                <!-- Left column -->
+                <div class="col">
+                    <div class="card" style="overflow:hidden">
+                        <div class="maphead">
+                            <div>
+                                <h2>Spatial Map</h2>
+                                <p>Incident locations and operational hazard overlays</p>
+                            </div>
+                            <div class="ctl">
+                                <div class="tabs" role="tablist">
+                                    <button class="on" role="tab" aria-selected="true" data-view="grid">Disaster Grid</button>
+                                    <button role="tab" aria-selected="false" data-view="topo">Topographic</button>
+                                    <button role="tab" aria-selected="false" data-view="sat">Satellite</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map GIS Hazard Overlays Toolbar -->
+                        <div class="map-overlays-bar" aria-label="GIS Map Overlays">
+                            <span class="ov-title">GIS Overlays:</span>
+                            <label class="ov-item">
+                                <input type="checkbox" id="ov-flood" checked>
+                                <span class="ov-swatch flood"></span> Flood Inundation Basin
+                            </label>
+                            <label class="ov-item">
+                                <input type="checkbox" id="ov-evac" checked>
+                                <span class="ov-swatch evac"></span> Evacuation Shelters &amp; Routes
+                            </label>
+                        </div>
+
+                        <!-- OpenLayers Map Container -->
+                        <div class="map" id="map-canvas"></div>
+
+                        <div class="mapfoot">
+                            <p><i class="dot"
+                                    style="display:inline-block;width:7px;height:7px;box-shadow:none;margin-right:6px"></i>Calumpang
+                                River Level: <b>4.8m (Warning Stage)</b><span class="sep">•</span>Affected Population
+                                Est:
+                                <b>4,120</b>
+                            </p>
+                            <a href="#" id="fullscreen-gis">Full Screen GIS View →</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right column -->
+                <aside class="card" aria-label="AI-flagged photos">
+                    <div class="qhead">
+                        <div>
+                            <h2>AI-flagged photos</h2><span class="qcount" id="badge-queue-count">23 queue</span>
+                            <p>Prioritized by <em>urgency</em> score</p>
+                        </div>
+                        <button class="fbtn" id="filter-btn">Filters</button>
+                    </div>
+                    <div class="list" id="incident-list">
+                        <article class="inc sev" data-severity="sev" data-incident-id="inc-1"
+                            title="Click to locate on map">
+                            <div class="thumb"><span>COLLAPSE</span></div>
+                            <div class="body">
+                                <span class="source-tag volunteer">Field Volunteer</span>
+                                <div class="r1"><b>Brgy. Alangilan</b><time>2m ago</time></div>
+                                <div class="r2"><span>AI score: <b>97%</b></span><span class="tag">Severe</span></div>
+                                <p class="snip">Bridge approach collapsed</p>
+                            </div>
+                            <div class="human-oversight">
+                                <button class="btn-confirm" data-action="confirm"
+                                    title="Validate AI prediction as Severe">Confirm</button>
+                                <div class="reclass-wrapper">
+                                    <select class="reclass-select" aria-label="Reclassify Severity">
+                                        <option value="" disabled selected>Reclassify...</option>
+                                        <option value="sev">Severe</option>
+                                        <option value="mod">Moderate</option>
+                                        <option value="min">Minor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="inc sev" data-severity="sev" data-incident-id="inc-2"
+                            title="Click to locate on map">
+                            <div class="thumb"><span>ROOF OFF</span></div>
+                            <div class="body">
+                                <span class="source-tag volunteer">Field Volunteer</span>
+                                <div class="r1"><b>Brgy. Sta. Clara</b><time>11m ago</time></div>
+                                <div class="r2"><span>AI score: <b>87%</b></span><span class="tag">Severe</span></div>
+                                <p class="snip">Downed primary power lines</p>
+                            </div>
+                            <div class="human-oversight">
+                                <button class="btn-confirm" data-action="confirm"
+                                    title="Validate AI prediction as Severe">Confirm</button>
+                                <div class="reclass-wrapper">
+                                    <select class="reclass-select" aria-label="Reclassify Severity">
+                                        <option value="" disabled selected>Reclassify...</option>
+                                        <option value="sev">Severe</option>
+                                        <option value="mod">Moderate</option>
+                                        <option value="min">Minor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="inc mod" data-severity="mod" data-incident-id="inc-3"
+                            title="Click to locate on map">
+                            <div class="thumb"><span>WATER</span></div>
+                            <div class="body">
+                                <span class="source-tag resident">Resident Upload</span>
+                                <div class="r1"><b>Brgy. Kumintang</b><time>24m ago</time></div>
+                                <div class="r2"><span>AI score: <b>67%</b></span><span class="tag">Moderate</span></div>
+                                <p class="snip">Water level waist-deep on road</p>
+                            </div>
+                            <div class="human-oversight">
+                                <button class="btn-confirm" data-action="confirm"
+                                    title="Validate AI prediction as Moderate">Confirm</button>
+                                <div class="reclass-wrapper">
+                                    <select class="reclass-select" aria-label="Reclassify Severity">
+                                        <option value="" disabled selected>Reclassify...</option>
+                                        <option value="sev">Severe</option>
+                                        <option value="mod">Moderate</option>
+                                        <option value="min">Minor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="inc min" data-severity="min" data-incident-id="inc-4"
+                            title="Click to locate on map">
+                            <div class="thumb"><span>DEBRIS</span></div>
+                            <div class="body">
+                                <span class="source-tag resident">Resident Upload</span>
+                                <div class="r1"><b>Brgy. Libjo</b><time>42m ago</time></div>
+                                <div class="r2"><span>AI score: <b>49%</b></span><span class="tag">Minor</span></div>
+                                <p class="snip">Small acacia branch on sidewalk</p>
+                            </div>
+                            <div class="human-oversight">
+                                <button class="btn-confirm" data-action="confirm"
+                                    title="Validate AI prediction as Minor">Confirm</button>
+                                <div class="reclass-wrapper">
+                                    <select class="reclass-select" aria-label="Reclassify Severity">
+                                        <option value="" disabled selected>Reclassify...</option>
+                                        <option value="sev">Severe</option>
+                                        <option value="mod">Moderate</option>
+                                        <option value="min">Minor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="qfoot">
+                        <span id="showing-text">Showing 4 of 23 photos</span>
+                        <a href="verified.html" id="view-queue-link">View Verified Reports →</a>
+                    </div>
+                </aside>
+            </section>
+        </div><!-- /.main-content -->
+    </main>
+
+    <!-- ================= MODAL: + SUBMIT DAMAGE REPORT ================= -->
+    <div class="modal-backdrop" id="modal-submit-report" role="dialog" aria-modal="true"
+        aria-labelledby="modal-submit-title" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-head">
+                <div>
+                    <span class="badge-modal">COMMUNITY &amp; VOLUNTEER GROUND-TRUTH INTAKE</span>
+                    <h3 id="modal-submit-title">Submit Post-Disaster Damage Photo</h3>
+                    <p class="modal-sub">Visual documentation for preliminary AI classification &amp; LGU assessment</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-submit-modal" aria-label="Close modal">✕</button>
+            </div>
+            <form id="damage-report-form" class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Reporter Role</label>
+                    <div class="role-selector">
+                        <label class="role-pill">
+                            <input type="radio" name="reporter-role" value="Resident Upload" checked>
+                            <span> Community Resident</span>
+                        </label>
+                        <label class="role-pill">
+                            <input type="radio" name="reporter-role" value="Field Volunteer">
+                            <span><svg class="i">
+                                    <use href="#shield" />
+                                </svg> Field Volunteer</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="report-barangay">Barangay (Batangas City)</label>
+                        <select id="report-barangay" class="form-input" required>
+                            <option value="Brgy. Malitam">Brgy. Malitam</option>
+                            <option value="Brgy. Alangilan">Brgy. Alangilan</option>
+                            <option value="Brgy. Sta. Clara">Brgy. Sta. Clara</option>
+                            <option value="Brgy. Kumintang">Brgy. Kumintang Ilaya</option>
+                            <option value="Brgy. Libjo">Brgy. Libjo</option>
+                            <option value="Brgy. Balagtas">Brgy. Balagtas</option>
+                            <option value="Brgy. Bolbok">Brgy. Bolbok</option>
+                            <option value="Brgy. Cuta">Brgy. Cuta</option>
+                            <option value="Brgy. Gulod Labac">Brgy. Gulod Labac</option>
+                            <option value="Brgy. Wawa">Brgy. Wawa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="report-category">Visible Damage Feature</label>
+                        <select id="report-category" class="form-input" required>
+                            <option value="ROOF OFF">Roof Detachment / Wind Damage</option>
+                            <option value="COLLAPSE">Structural Failure / Wall Collapse</option>
+                            <option value="WATER">Water Inundation / Flash Flood</option>
+                            <option value="DEBRIS">Downed Trees / Blocked Route</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="report-desc">Landmark &amp; Damage Note</label>
+                    <input type="text" id="report-desc" class="form-input"
+                        placeholder="e.g. Near barangay outpost; secondary road impassable" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Damage Photograph</label>
+                    <div class="file-dropzone" id="file-dropzone">
+                        <input type="file" id="report-photo" accept="image/*" class="file-input-hidden">
+                        <div class="dropzone-content" id="dropzone-prompt">
+                            <svg class="i drop-icon">
+                                <use href="#camera" />
+                            </svg>
+                            <p><strong>Click to browse photo</strong> or drag and drop</p>
+                            <small>Simulates mobile phone or drone photo submission</small>
+                        </div>
+                        <div class="photo-preview-wrap" id="photo-preview-wrap" style="display:none;">
+                            <img id="photo-preview-img" src="" alt="Damage Preview">
+                            <button type="button" class="btn-remove-preview" id="btn-remove-photo">Change Photo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scanning-indicator" id="scan-indicator" style="display:none;">
+                    <div class="scan-bar">
+                        <div class="scan-fill"></div>
+                    </div>
+                    <div class="scan-status-text">⚡ ResQ-Vision AI: Analyzing visual damage features &amp; calculating
+                        preliminary urgency score...</div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn-cancel" id="btn-cancel-submit">Cancel</button>
+                    <button type="submit" class="btn-primary-action" id="btn-submit-scan">
+                        <span>⚡ Run AI Preliminary Scan &amp; Submit</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: SITREP PDF PREVIEW ================= -->
+    <div class="modal-backdrop" id="modal-sitrep-preview" role="dialog" aria-modal="true" style="display:none;">
+        <div class="modal-card sitrep-card">
+            <div class="modal-head">
+                <div>
+                    <span class="badge-modal">OFFICIAL DISASTER ASSESSMENT</span>
+                    <h3>MDRRMO Situation Report (SITREP)</h3>
+                    <p class="modal-sub">Batangas City Incident Command Post 1 • Generated: <span
+                            id="sitrep-timestamp"></span></p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-sitrep-modal" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal-body sitrep-body">
+                <div class="sitrep-section">
+                    <h4>1. EXECUTIVE SUMMARY &amp; METEOROLOGICAL CONTEXT</h4>
+                    <p>Rapid visual assessment conducted via ResQ-Scan crowdsourced telemetry and field drone
+                        surveillance. Telemetry indicates active flooding at Calumpang River basin (4.8m Warning Stage)
+                        with 4,120 estimated affected population across coastal and riverside sectors.</p>
+                </div>
+
+                <div class="sitrep-section">
+                    <h4>2. CURRENT DAMAGE SEVERITY BREAKDOWN</h4>
+                    <div class="sitrep-grid">
+                        <div class="s-box sev"><strong><span id="sitrep-sev-count">21</span></strong> Severe (Critical
+                            Urgency)</div>
+                        <div class="s-box mod"><strong><span id="sitrep-mod-count">15</span></strong> Moderate
+                            (Assistance Needed)</div>
+                        <div class="s-box min"><strong><span id="sitrep-min-count">7</span></strong> Minor (Manageable)
+                        </div>
+                        <div class="s-box aw"><strong><span id="sitrep-aw-count">23</span></strong> Awaiting DRRMO
+                            Verification</div>
+                    </div>
+                </div>
+
+                <div class="sitrep-section">
+                    <h4>3. HUMAN-IN-THE-LOOP VERIFICATION COMPLIANCE</h4>
+                    <p style="font-size:12px; color:var(--muted);">All AI classifications are preliminary and subject to
+                        verification by authorized DRRMO officers prior to relief resource dispatch. Verified data
+                        complements hazard simulation models (e.g. DOST-PHIVOLCS REDAS).</p>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-cancel" id="btn-cancel-sitrep">Close</button>
+                <button type="button" class="btn-primary-action" id="btn-print-sitrep"><svg class="i">
+                        <use href="#file-text" />
+                    </svg> Print / Download SITREP PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: MSWDO BARANGAY SUMMARY ================= -->
+    <div class="modal-backdrop" id="modal-mswdo-preview" role="dialog" aria-modal="true" style="display:none;">
+        <div class="modal-card mswdo-card">
+            <div class="modal-head">
+                <div>
+                    <span class="badge-modal">MSWDO RELIEF PLANNING REFERENCE</span>
+                    <h3>Barangay Damage Summary (MSWDO / DRRMO)</h3>
+                    <p class="modal-sub">Ground-truth visual damage reference for relief logistics planning (Reference
+                        only – does not automate aid distribution)</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-mswdo-modal" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal-body mswdo-body">
+                <div class="table-container">
+                    <table class="mswdo-table">
+                        <thead>
+                            <tr>
+                                <th>Barangay</th>
+                                <th>Severe</th>
+                                <th>Moderate</th>
+                                <th>Minor</th>
+                                <th>Awaiting Review</th>
+                                <th>DRRMO Status</th>
+                                <th>Planning Staging</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mswdo-table-body">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mswdo-disclaimer">
+                    <p><strong>Note for Aid Coordinators:</strong> Visual severity data complements hazard simulation
+                        models (e.g. DOST-PHIVOLCS REDAS) and serves as preliminary spatial reference for municipal
+                        relief staging.</p>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-cancel" id="btn-cancel-mswdo">Close</button>
+                <button type="button" class="btn-primary-action" id="btn-export-mswdo-csv"><svg class="i">
+                        <use href="#download" />
+                    </svg> Export CSV Summary</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Feedback Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- Load MapLibre GL before the dashboard application, with a CDN fallback. -->
+    <script>
+        (function () {
+            function startApp() {
+                if (window.__resqAppStarted) return;
+                window.__resqAppStarted = true;
+                var app = document.createElement('script');
+                app.src = 'admin.js';
+                app.onerror = function () {
+                    var target = document.getElementById('map-canvas');
+                    if (target) target.innerHTML = '<div class="map-load-error">The dashboard script could not be loaded. Check that admin.js is in the same folder.</div>';
+                };
+                document.body.appendChild(app);
+            }
+            function loadFallback() {
+                var fallback = document.createElement('script');
+                fallback.src = 'https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js';
+                fallback.onload = startApp;
+                fallback.onerror = function () {
+                    var target = document.getElementById('map-canvas');
+                    if (target) target.innerHTML = '<div class="map-load-error">Map library could not be loaded. Check your internet connection and refresh.</div>';
+                };
+                document.head.appendChild(fallback);
+            }
+            var primary = document.createElement('script');
+            primary.src = 'https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.2/dist/maplibre-gl.js';
+            primary.onload = startApp;
+            primary.onerror = loadFallback;
+            document.head.appendChild(primary);
+        })();
+    </script>
+</body>
+
+</html>

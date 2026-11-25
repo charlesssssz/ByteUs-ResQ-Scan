@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ResQ-Scan – Verified Reports (Batangas)</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="verified.css">
+</head>
+
+<body>
+
+    <!-- Inline SVG icon sprite (matching admin.html) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="shield" viewBox="0 0 24 24">
+            <path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6l8-3z" />
+            <path d="M8 12h8M12 8v8" opacity=".9" />
+        </symbol>
+        <symbol id="grid" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+        </symbol>
+        <symbol id="map" viewBox="0 0 24 24">
+            <path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" />
+            <path d="M9 4v14M15 6v14" />
+        </symbol>
+        <symbol id="img" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <circle cx="9" cy="10" r="2" />
+            <path d="M21 16l-5-5-9 9" />
+        </symbol>
+        <symbol id="check" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M8 12l3 3 5-6" />
+        </symbol>
+        <symbol id="bell" viewBox="0 0 24 24">
+            <path d="M6 9a6 6 0 1112 0c0 6 2 7 2 7H4s2-1 2-7z" />
+            <path d="M10 20a2 2 0 004 0" />
+        </symbol>
+        <symbol id="warn" viewBox="0 0 24 24">
+            <path d="M12 3l10 18H2L12 3z" />
+            <path d="M12 10v5M12 18h.01" />
+        </symbol>
+        <symbol id="up" viewBox="0 0 24 24">
+            <path d="M7 17L17 7M9 7h8v8" />
+        </symbol>
+        <symbol id="clip" viewBox="0 0 24 24">
+            <rect x="5" y="4" width="14" height="17" rx="2" />
+            <path d="M9 4h6v3H9zM9 12h6M9 16h4" />
+        </symbol>
+        <symbol id="moon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        </symbol>
+        <symbol id="sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+                d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </symbol>
+        <symbol id="file-text" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+        </symbol>
+        <symbol id="download" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+        </symbol>
+        <symbol id="search" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </symbol>
+        <symbol id="eye" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+        </symbol>
+    </svg>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo emblem-badge" title="ResQ-Scan Logo">
+                <img class="brand-logo" src="ResQ-Scan_Logo.png" alt="ResQ-Scan logo">
+            </div>
+            <div class="brand-text">
+                <b class="brand-title">ResQ-Scan</b>
+                <span class="brand-sub">LGU OPS • BATANGAS</span>
+            </div>
+        </div>
+
+        <div class="net">
+            <span class="l"><i class="dot"></i>Operations Network</span>
+            <span class="tagb">R-IV-A</span>
+        </div>
+
+        <nav class="nav" aria-label="Primary">
+            <a href="admin.html"><svg class="i">
+                    <use href="#grid" />
+                </svg>Dashboard</a>
+            <a href="flagged.html"><svg class="i">
+                    <use href="#img" />
+                </svg>Flagged Photos<span class="end"><span class="pill r" id="nav-queue-count">23</span></span></a>
+            <a href="verified.html" class="active" aria-current="page"><svg class="i">
+                    <use href="#check" />
+                </svg>Verified Reports<span class="end"><span class="pill g" id="nav-verified-rate">94%</span></span></a>
+        </nav>
+
+        <div class="cmd">
+            <div class="row"><strong>MDRRMO BATANGAS</strong><span class="on">● Online</span></div>
+            <p>Incident Command Post 1</p>
+            <small><span>ResQ Core v4.2.1</span><span>Live Sync</span></small>
+        </div>
+
+        <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" type="button"
+                aria-label="Collapse sidebar" title="Collapse sidebar">
+            <span aria-hidden="true">‹</span>
+        </button>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+        <!-- ================= DOCKED TOP COMMAND HEADER ================= -->
+        <header class="top-command-header">
+            <div class="header-left">
+                <div class="header-breadcrumb">BATANGAS PROVINCE / DRRMO HUMAN-IN-THE-LOOP ARCHIVE</div>
+                <div class="header-headline">
+                    <h1>Verified Reports</h1>
+                </div>
+            </div>
+
+            <div class="header-tools">
+                <!-- Location / Sector Selector -->
+                <div class="sector-dropdown-wrapper">
+                    <svg class="i icon-pin">
+                        <use href="#map" />
+                    </svg>
+                    <select id="sector-filter" aria-label="Filter by Sector">
+                        <option value="all">All Sectors – Batangas City</option>
+                        <option value="s1">Sector 1 (Poblacion &amp; Port)</option>
+                        <option value="s2">Sector 2 (Calumpang Basin)</option>
+                        <option value="s3">Sector 3 (South Coast)</option>
+                    </select>
+                </div>
+
+                <div class="header-vsep"></div>
+
+                <!-- Utility Controls -->
+                <button class="btn-icon-command" id="theme-toggle" aria-label="Toggle Command Dark Mode"
+                    title="Toggle EOC Dark/Light Mode">
+                    <svg class="i icon-moon">
+                        <use href="#moon" />
+                    </svg>
+                    <svg class="i icon-sun">
+                        <use href="#sun" />
+                    </svg>
+                </button>
+
+                <div class="header-vsep"></div>
+
+                <!-- User account dropdown -->
+                <div class="account-menu-wrap">
+                    <button class="profile-chip" id="account-menu-toggle" type="button"
+                        aria-expanded="false" aria-haspopup="true" aria-controls="account-menu">
+                        <span class="avatar-circle">AD</span>
+                        <span class="profile-details">
+                            <span class="profile-role">MDRRMO Chief</span>
+                            <span class="profile-name">Command Post 1</span>
+                        </span>
+                        <span class="account-chevron" aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="account-menu" id="account-menu" hidden>
+                        <div class="account-menu-heading">Account</div>
+                        <a href="user.html" class="account-menu-item" id="users-accounts-btn">Citizen's Acc.</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Read-only Verified Reports Summary Metrics -->
+            <section class="metrics-grid" aria-label="Verified reports summary">
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span>VERIFIED SEVERE</span></div>
+                        <span class="status-chip chip-red">Priority Dispatch</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="v-metric-sev">21</strong>
+                        <span class="trend-badge red"><svg class="i">
+                                <use href="#up" />
+                            </svg>Confirmed Critical</span>
+                    </div>
+                    <p class="metric-desc">Validated structural failures, downed lines, and impassable routes.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span>VERIFIED MODERATE</span></div>
+                        <span class="status-chip chip-amber">Staged Response</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="v-metric-mod">15</strong>
+                        <span class="trend-badge amber"><svg class="i">
+                                <use href="#warn" />
+                            </svg>Clearing Active</span>
+                    </div>
+                    <p class="metric-desc">Confirmed roof damage, localized flooding, and partial obstructions.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span>VERIFIED MINOR</span></div>
+                        <span class="status-chip chip-green">Logged &amp; Cleared</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="v-metric-min">7</strong>
+                        <span class="trend-badge green"><svg class="i">
+                                <use href="#check" />
+                            </svg>Barangay Crew</span>
+                    </div>
+                    <p class="metric-desc">Minor shoulder debris and non-hazardous wind damage signed off.</p>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <div class="metric-k"><span>TOTAL SIGNED-OFF</span></div>
+                        <span class="status-chip chip-blue">Audit Ready</span>
+                    </div>
+                    <div class="metric-value-row">
+                        <strong id="v-metric-total">43</strong>
+                        <span class="trend-badge blue"><svg class="i">
+                                <use href="#clip" />
+                            </svg>94% AI Match</span>
+                    </div>
+                    <p class="metric-desc">Officer-validated records ready for SITREP and MSWDO relief staging.</p>
+                </article>
+            </section>
+
+            <!-- Verified Reports Ledger Card -->
+            <section class="card verified-ledger-card" aria-label="Verified incident reports log">
+                <div class="ledger-head">
+                    <div class="ledger-title-group">
+                        <h2>Officer-Validated Damage Log <span class="qcount" id="ledger-count-label">Showing 8 of 43 records</span></h2>
+                        <p>Human-in-the-loop sign-offs by authorized MDRRMO duty officers</p>
+                    </div>
+
+                    <div class="ledger-actions">
+                        <button type="button" class="btn o" id="btn-open-sitrep">
+                            <svg class="i"><use href="#file-text" /></svg> Generate SITREP
+                        </button>
+                        <button type="button" class="btn s" id="btn-export-verified-csv">
+                            <svg class="i"><use href="#download" /></svg> Export CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter & Search Bar -->
+                <div class="ledger-toolbar">
+                    <div class="search-box">
+                        <svg class="i"><use href="#search" /></svg>
+                        <input type="search" id="verified-search" placeholder="Search report ID, barangay, damage note, or officer..." aria-label="Search verified reports">
+                    </div>
+
+                    <div class="filter-controls">
+                        <div class="tabs" role="tablist" aria-label="Filter by verified severity">
+                            <button class="on" type="button" role="tab" aria-selected="true" data-sev="all">All (8)</button>
+                            <button type="button" role="tab" aria-selected="false" data-sev="sev">Severe</button>
+                            <button type="button" role="tab" aria-selected="false" data-sev="mod">Moderate</button>
+                            <button type="button" role="tab" aria-selected="false" data-sev="min">Minor</button>
+                        </div>
+
+                        <select id="decision-filter" class="reclass-select toolbar-select" aria-label="Filter by officer decision">
+                            <option value="all">All Decisions</option>
+                            <option value="confirmed">AI Confirmed</option>
+                            <option value="reclassified">Officer Reclassified</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Structured Data Table -->
+                <div class="table-container verified-table-wrap">
+                    <table class="mswdo-table verified-table">
+                        <thead>
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Evidence &amp; Incident</th>
+                                <th>Barangay / Sector</th>
+                                <th>Verified Severity</th>
+                                <th>AI vs. Officer Review</th>
+                                <th>Verified By</th>
+                                <th>Timestamp</th>
+                                <th class="col-right">Inspection</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verified-table-body">
+                            <!-- Populated by verified.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-ledger-state" id="empty-ledger-state" hidden>
+                    <p><strong>No verified reports match your current filters.</strong></p>
+                    <p>Try clearing the search query or switching back to all severity levels.</p>
+                    <button type="button" class="btn o" id="btn-reset-filters">Reset Filters</button>
+                </div>
+
+                <div class="qfoot">
+                    <span id="ledger-footer-summary">All listed records have completed DRRMO officer verification.</span>
+                    <a href="admin.html">← Return to Command Overview</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ================= MODAL: REPORT INSPECTION DETAIL ================= -->
+    <div class="modal-backdrop" id="modal-report-detail" role="dialog" aria-modal="true"
+        aria-labelledby="detail-modal-title" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-head">
+                <div>
+                    <span class="badge-modal" id="detail-report-id">RPT-2026-0841</span>
+                    <h3 id="detail-modal-title">Incident Verification Record</h3>
+                    <p class="modal-sub" id="detail-subtitle">Brgy. Alangilan • Sector 3</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-detail" aria-label="Close modal">✕</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="detail-preview-banner">
+                    <div class="detail-thumb-box" id="detail-thumb-label">COLLAPSE</div>
+                    <div class="detail-meta-stack">
+                        <div class="detail-badges-row" id="detail-badges"></div>
+                        <h4 class="detail-incident-title" id="detail-incident-title">Bridge approach collapsed</h4>
+                        <p class="detail-incident-desc" id="detail-incident-desc">Critical access route impassable.</p>
+                    </div>
+                </div>
+
+                <div class="detail-audit-grid">
+                    <div class="audit-cell">
+                        <span class="audit-label">SOURCE SUBMISSION</span>
+                        <strong id="detail-source">Field Volunteer</strong>
+                    </div>
+                    <div class="audit-cell">
+                        <span class="audit-label">INITIAL AI PREDICTION</span>
+                        <strong id="detail-ai-pred">Severe (97% confidence)</strong>
+                    </div>
+                    <div class="audit-cell">
+                        <span class="audit-label">OFFICER DECISION</span>
+                        <strong id="detail-decision">Confirmed by DRRMO</strong>
+                    </div>
+                    <div class="audit-cell">
+                        <span class="audit-label">VALIDATED BY &amp; TIME</span>
+                        <strong id="detail-officer-time">Duty Officer M. Reyes • 10:42 AM</strong>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="detail-officer-notes">DRRMO Operational Remarks</label>
+                    <div class="mswdo-disclaimer" id="detail-officer-notes">
+                        Barricades requested from City Engineering Office. Rerouting emergency vehicles via Diversion Road.
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-foot">
+                <button type="button" class="btn-cancel" id="btn-close-detail-foot">Close</button>
+                <button type="button" class="btn-primary-action" id="btn-print-single">
+                    <svg class="i"><use href="#file-text" /></svg> Print Verification Sheet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: SITREP PREVIEW ================= -->
+    <div class="modal-backdrop" id="modal-sitrep-preview" role="dialog" aria-modal="true" style="display:none;">
+        <div class="modal-card sitrep-card">
+            <div class="modal-head">
+                <div>
+                    <span class="badge-modal">OFFICIAL DISASTER ASSESSMENT</span>
+                    <h3>Verified Damage Summary (SITREP Extract)</h3>
+                    <p class="modal-sub">Batangas City Incident Command Post 1 • Generated: <span id="sitrep-timestamp"></span></p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-sitrep" aria-label="Close modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="sitrep-section">
+                    <h4>1. VERIFIED DAMAGE BREAKDOWN</h4>
+                    <div class="sitrep-grid">
+                        <div class="s-box sev"><strong>21</strong> Verified Severe</div>
+                        <div class="s-box mod"><strong>15</strong> Verified Moderate</div>
+                        <div class="s-box min"><strong>7</strong> Verified Minor</div>
+                        <div class="s-box aw"><strong>43</strong> Total Signed-Off</div>
+                    </div>
+                </div>
+                <div class="sitrep-section">
+                    <h4>2. HUMAN-IN-THE-LOOP AUDIT ATTESTATION</h4>
+                    <p style="font-size:12px; color:var(--muted);">Every record listed in the Verified Reports archive has been individually reviewed and signed off by an authorized MDRRMO duty officer prior to dispatch or relief staging.</p>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button type="button" class="btn-cancel" id="btn-cancel-sitrep">Close</button>
+                <button type="button" class="btn-primary-action" id="btn-print-sitrep">
+                    <svg class="i"><use href="#file-text" /></svg> Print / Save PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Feedback Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <script src="verified.js"></script>
+</body>
+
+</html>

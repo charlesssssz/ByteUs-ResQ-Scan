@@ -1,0 +1,422 @@
+/* ==========================================================================
+   RESQ-SCAN: VERIFIED REPORTS PAGE EXTENSIONS
+   Extends admin.css tokens, dark mode, and restrained LGU operations styling.
+   ========================================================================== */
+
+.verified-ledger-card {
+    overflow: hidden;
+}
+
+.ledger-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.ledger-title-group h2 {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.ledger-title-group p {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.ledger-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Search & Filter Toolbar */
+.ledger-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+}
+
+.search-box {
+    position: relative;
+    flex: 1 1 260px;
+    max-width: 380px;
+    display: flex;
+    align-items: center;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 10px;
+    width: 14px;
+    height: 14px;
+    color: var(--muted);
+    pointer-events: none;
+}
+
+.search-box input {
+    width: 100%;
+    height: 32px;
+    padding: 6px 10px 6px 32px;
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    font: inherit;
+    font-size: 12px;
+    color: var(--ink);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.search-box input::placeholder {
+    color: var(--muted);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: var(--focus-ring);
+}
+
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.toolbar-select {
+    width: auto;
+    min-width: 165px;
+    height: 32px;
+    padding: 5px 28px 5px 10px;
+    background-color: var(--card);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Verified Reports Table */
+.verified-table-wrap {
+    border: 0;
+    border-radius: 0;
+}
+
+.verified-table th {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+}
+
+.verified-table td {
+    vertical-align: middle;
+    padding: 11px 14px;
+    font-size: 12px;
+}
+
+.verified-table .col-right {
+    text-align: right;
+}
+
+.rpt-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blu-ink);
+    white-space: nowrap;
+}
+
+.evidence-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 210px;
+}
+
+.mini-thumb {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    padding: 3px;
+    background: #E9EEF3;
+    border: 1px solid #D9E1E8;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    font-weight: 700;
+    text-align: center;
+    color: #526274;
+}
+
+[data-theme="dark"] .mini-thumb {
+    background: var(--surface-2);
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+}
+
+.evidence-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.evidence-text b {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.evidence-text span {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.brgy-cell {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.brgy-cell b {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.brgy-cell small {
+    font-size: 10.5px;
+    color: var(--muted);
+}
+
+.sev-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sev-pill.sev { background: var(--red-bg); border-color: var(--red-bd); color: var(--red-ink); }
+.sev-pill.mod { background: var(--amb-bg); border-color: var(--amb-bd); color: var(--amb-ink); }
+.sev-pill.min { background: var(--grn-bg); border-color: var(--grn-bd); color: var(--grn-ink); }
+
+.decision-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    white-space: nowrap;
+}
+
+.decision-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.decision-badge.confirmed {
+    background: var(--grn-bg);
+    color: var(--grn-ink);
+    border: 1px solid var(--grn-bd);
+}
+
+.decision-badge.reclassified {
+    background: var(--amb-bg);
+    color: var(--amb-ink);
+    border: 1px solid var(--amb-bd);
+}
+
+.decision-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.officer-cell {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.officer-cell b {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.officer-cell small {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.time-cell {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.btn-inspect {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.btn-inspect:hover {
+    background: var(--blu-bg);
+    border-color: var(--blue);
+    color: var(--blu-ink);
+}
+
+.btn-inspect svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* Empty Filter State */
+.empty-ledger-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+
+.empty-ledger-state[hidden] {
+    display: none;
+}
+
+.empty-ledger-state strong {
+    font-size: 13px;
+    color: var(--ink);
+}
+
+/* Inspection Modal Styling */
+.detail-preview-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+
+.detail-thumb-box {
+    width: 76px;
+    height: 76px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    padding: 6px;
+    background: #E9EEF3;
+    border: 1px solid #D9E1E8;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 800;
+    text-align: center;
+    color: #526274;
+}
+
+[data-theme="dark"] .detail-thumb-box {
+    background: var(--card);
+    border-color: var(--line-strong);
+    color: var(--ink-2);
+}
+
+.detail-meta-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.detail-incident-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.detail-incident-desc {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.detail-audit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.audit-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+}
+
+.audit-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    color: var(--muted);
+}
+
+.audit-cell strong {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+@media (max-width: 700px) {
+    .detail-audit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+}
